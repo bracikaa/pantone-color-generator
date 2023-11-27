@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import ModalContent from "../ModalContent";
+import React from "react";
 
-export default function ColorSelectModal() {
+const ColorSelectModal: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
@@ -19,4 +20,6 @@ export default function ColorSelectModal() {
         )}
     </>
   );
-}
+};
+
+export default ColorSelectModal;

@@ -1,4 +1,6 @@
-export const pantoneColors = {
+import { PantoneColors } from "./pantone-colors.model";
+
+export const pantoneColors: PantoneColors = {
   names: [
     "egret",
     "snow-white",

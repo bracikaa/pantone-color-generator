@@ -1,12 +1,11 @@
 import { pantoneColors } from "../config/pantone-colors";
+import React from "react";
 
-export default function ModalContent({ onClose }) {
+const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const pantoneObjectColors = pantoneColors.names.map((name, index) => ({
     colorName: name,
     value: pantoneColors.values[index],
   }));
-
-  console.log(pantoneObjectColors[0]);
   return (
     <div className="modal flex content-center flex-col w-[800px] h-[800px] z-index-2 overflow-auto">
       <div className="flex items-center bg-indigo-100 flex-wrap">
@@ -31,4 +30,6 @@ export default function ModalContent({ onClose }) {
       </button>
     </div>
   );
-}
+};
+
+export default ModalContent;
