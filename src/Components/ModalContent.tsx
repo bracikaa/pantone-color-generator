@@ -1,5 +1,6 @@
 import { pantoneColors } from "../config/pantone-colors";
 import React, { useState } from "react";
+import ActionButtons from "./ActionButtons";
 
 const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const pantoneObjectColors = pantoneColors.names.map((name, index) => ({
@@ -23,6 +24,10 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       setColorsSelected(colors);
     }
   };
+
+  const generateGradientHandler = () => {
+    console.log("Test")
+  }
 
   return (
     <div className="w-[800px] h-[800px] fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] modal flex content-center flex-col z-index-2 overflow-auto no-scrollbar border rounded-md shadow-md">
@@ -60,6 +65,9 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             </div>
           );
         })}
+      </div>
+      <div className="fixed bottom-[20px] left-[50%] translate-x-[-50%]">
+        {colorsSelected.length === 2 && <ActionButtons generateGradient={generateGradientHandler} />}
       </div>
     </div>
   );
