@@ -1,6 +1,7 @@
 import { pantoneColors } from "../config/pantone-colors";
 import React, { useState } from "react";
 import ActionButtons from "./ActionButtons";
+import ColorLabels from "./ColorLabels";
 
 const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const pantoneObjectColors = pantoneColors.names.map((name, index) => ({
@@ -44,7 +45,7 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           return (
             <div
               onClick={() => setColor(color.value)}
-              className="relative pantone-color-box p-1 m-1 rounded-lg h-[120px] w-[120px] content-center cursor-pointer"
+              className="relative pantone-color-box p-1 m-1 rounded-lg h-[100px] w-[100px] content-center cursor-pointer"
               style={{
                 backgroundColor: color.value,
               }}
@@ -55,13 +56,7 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   {colorsSelected.indexOf(color.value) + 1}
                 </div>
               ) : null}
-              <div className="text-[12px]">
-                {color.colorName
-                  .split("-")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
-              </div>
-              <div className="text-[14px]">{color.value.toUpperCase()}</div>
+              <ColorLabels color={color}></ColorLabels>
             </div>
           );
         })}
