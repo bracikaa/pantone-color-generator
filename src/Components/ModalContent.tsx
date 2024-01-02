@@ -28,6 +28,11 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   const generateGradientHandler = () => {
     console.log("Test");
+    const rootElement = document.getElementById("root");
+
+    if (rootElement) {
+      rootElement.style.backgroundImage = `linear-gradient(to bottom right, ${colorsSelected[0]}, ${colorsSelected[1]})`;
+    }
   };
 
   const clearHandler = () => {
@@ -36,8 +41,8 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <>
-      <div className="w-[800px] h-[800px] fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] modal flex content-center flex-col z-index-2 overflow-auto no-scrollbar border rounded-md shadow-md">
-        <div className="header w-100 block min-h-[60px]">
+      <div className="w-[800px] bg-white h-[800px] fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] modal flex content-center flex-col z-index-2 overflow-auto no-scrollbar border rounded-md shadow-md">
+        <div className="header w-[100%] block min-h-[60px] fixed z-10 bg-white">
           <button
             onClick={onClose}
             className="close absolute top-[10px] right-[10px] text-5xl"

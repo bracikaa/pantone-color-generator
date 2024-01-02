@@ -14,7 +14,6 @@ const ColorLabels = ({ color }: { color: Color }) => {
       textColor!.red * 0.299 +
       textColor!.green * 0.587 +
       textColor!.blue * 0.114;
-    console.log(textContrast)
     if (textContrast > 186) {
       setBgColor("black");
     } else {
