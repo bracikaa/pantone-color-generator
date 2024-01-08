@@ -2,6 +2,7 @@ import { pantoneColors } from "../config/pantone-colors";
 import React, { useState } from "react";
 import ActionButtons from "./ActionButtons";
 import ColorLabels from "./ColorLabels";
+import html2canvas from "html2canvas";
 
 const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const pantoneObjectColors = pantoneColors.names.map((name, index) => ({
@@ -27,11 +28,40 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   const generateGradientHandler = () => {
-    console.log("Test");
     const rootElement = document.getElementById("root");
 
     if (rootElement) {
       rootElement.style.backgroundImage = `linear-gradient(to bottom right, ${colorsSelected[0]}, ${colorsSelected[1]})`;
+    }
+  };
+
+  const takeScreenshotHandler = () => {
+    const rootElement = document.querySelector("#root");
+    const buttonsWrapper: HTMLElement | null =
+      rootElement?.querySelector(".selector-buttons-wrapper") || null;
+    if (rootElement && buttonsWrapper) {
+      buttonsWrapper.style.visibility = "hidden";
+      html2canvas(rootElement as HTMLElement).then((canvas) => {
+        saveAs(
+          canvas.toDataURL(),
+          `${colorsSelected[0]}-${colorsSelected[1]}.png`
+        );
+        buttonsWrapper.style.visibility = "visible";
+      });
+    }
+  };
+
+  const saveAs = (uri: string, filename: string) => {
+    var link = document.createElement("a");
+
+    if (typeof link.download === "string") {
+      link.href = uri;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(uri);
     }
   };
 
@@ -76,6 +106,7 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         {colorsSelected.length === 2 && (
           <ActionButtons
             generateGradient={generateGradientHandler}
+            takeScreenshot={takeScreenshotHandler}
             clear={clearHandler}
           />
         )}
