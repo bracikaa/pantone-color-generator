@@ -3,39 +3,23 @@ import React, { useState } from "react";
 import ActionButtons from "./ActionButtons";
 import ColorLabels from "./ColorLabels";
 import html2canvas from "html2canvas";
-import { useSelector } from "react-redux";
-import { selectColors } from "../features/colorsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearColors, selectColors, setColors } from "../features/colorsSlice";
 
 const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const colors = useSelector(selectColors);
+  const dispatch = useDispatch();
+
   const pantoneObjectColors = pantoneColors.names.map((name, index) => ({
     colorName: name,
     value: pantoneColors.values[index],
   }));
 
-  const [colorsSelected, setColorsSelected] = useState<string[]>([]);
-
-  const setColor = (color: string) => {
-    console.log(colors)
-    const colorIndexIfExisting = colors.indexOf(color);
-
-    if (colorIndexIfExisting > -1) {
-      colors.splice(colorIndexIfExisting, 1);
-      setColorsSelected(colors);
-      return;
-    }
-
-    if (colors.length < 2) {
-      colors.push(color);
-      setColorsSelected(colors);
-    }
-  };
-
   const generateGradientHandler = () => {
     const rootElement = document.getElementById("root");
 
     if (rootElement) {
-      rootElement.style.backgroundImage = `linear-gradient(to bottom right, ${colorsSelected[0]}, ${colorsSelected[1]})`;
+      rootElement.style.backgroundImage = `linear-gradient(to bottom right, ${colors[0]}, ${colors[1]})`;
     }
   };
 
@@ -46,10 +30,7 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     if (rootElement && buttonsWrapper) {
       buttonsWrapper.style.visibility = "hidden";
       html2canvas(rootElement as HTMLElement).then((canvas) => {
-        saveAs(
-          canvas.toDataURL(),
-          `${colorsSelected[0]}-${colorsSelected[1]}.png`
-        );
+        saveAs(canvas.toDataURL(), `${colors[0]}-${colors[1]}.png`);
         buttonsWrapper.style.visibility = "visible";
       });
     }
@@ -70,7 +51,7 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   const clearHandler = () => {
-    setColorsSelected([]);
+    dispatch(clearColors());
   };
 
   return (
@@ -88,16 +69,16 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           {pantoneObjectColors.map((color) => {
             return (
               <div
-                onClick={() => setColor(color.value)}
+                onClick={() => dispatch(setColors(color.value))}
                 className="relative pantone-color-box p-1 m-1 rounded-lg h-[100px] w-[100px] content-center cursor-pointer"
                 style={{
                   backgroundColor: color.value,
                 }}
                 key={color.colorName}
               >
-                {colorsSelected.includes(color.value) ? (
+                {colors.includes(color.value) ? (
                   <div className="w-[30px] h-[30px] top-[-6px] left-[-6px] text-center rounded-full bg-amber-300 absolute">
-                    {colorsSelected.indexOf(color.value) + 1}
+                    {colors.indexOf(color.value) + 1}
                   </div>
                 ) : null}
                 <ColorLabels color={color}></ColorLabels>
@@ -107,7 +88,7 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </div>
       </div>
       <div className="fixed bottom-[100px] left-[50%] translate-x-[-50%]">
-        {colorsSelected.length === 2 && (
+        {colors.length === 2 && (
           <ActionButtons
             generateGradient={generateGradientHandler}
             takeScreenshot={takeScreenshotHandler}
