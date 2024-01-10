@@ -3,16 +3,20 @@ import React, { useState } from "react";
 import ActionButtons from "./ActionButtons";
 import ColorLabels from "./ColorLabels";
 import html2canvas from "html2canvas";
+import { useSelector } from "react-redux";
+import { selectColors } from "../features/colorsSlice";
 
 const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const colors = useSelector(selectColors);
   const pantoneObjectColors = pantoneColors.names.map((name, index) => ({
     colorName: name,
     value: pantoneColors.values[index],
   }));
 
   const [colorsSelected, setColorsSelected] = useState<string[]>([]);
+
   const setColor = (color: string) => {
-    const colors = [...colorsSelected];
+    console.log(colors)
     const colorIndexIfExisting = colors.indexOf(color);
 
     if (colorIndexIfExisting > -1) {
