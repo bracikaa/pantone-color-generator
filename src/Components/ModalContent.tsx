@@ -1,5 +1,5 @@
 import { pantoneColors } from "../config/pantone-colors";
-import React, { useState } from "react";
+import React from "react";
 import ActionButtons from "./ActionButtons";
 import ColorLabels from "./ColorLabels";
 import html2canvas from "html2canvas";
@@ -50,10 +50,6 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     }
   };
 
-  const clearHandler = () => {
-    dispatch(clearColors());
-  };
-
   return (
     <>
       <div className="w-[800px] bg-white h-[800px] fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] modal flex content-center flex-col z-index-2 overflow-auto no-scrollbar border rounded-md shadow-md">
@@ -92,7 +88,6 @@ const ModalContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           <ActionButtons
             generateGradient={generateGradientHandler}
             takeScreenshot={takeScreenshotHandler}
-            clear={clearHandler}
           />
         )}
       </div>
